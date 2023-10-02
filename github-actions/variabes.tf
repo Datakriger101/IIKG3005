@@ -4,7 +4,7 @@ variable "rg_location" {
 }
 variable "rg_name" {
   type    = string
-  default = "rg-web"
+  default = "rg-web-ezkid"
 }
 variable "sa_name" {
   type    = string
