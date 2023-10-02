@@ -1,29 +1,29 @@
 variable "rg_backend_name" {
   type        = string
-  description = "Name of the Resource Group backend"
+  description = "value"
 }
 
 variable "rg_backend_location" {
   type        = string
-  description = "Name of the Resource Group backend"
+  description = "value"
 }
 
 variable "sa_backend_name" {
   type        = string
-  description = "Name of the Storage Accoount backend"
+  description = "value"
 }
 
 variable "sc_backend_name" {
   type        = string
-  description = "Name of the Storage Container backend"
-}
-
-variable "sa_backend_accesskey_name" {
-  type        = string
-  description = "Name of access key  for storage account"
+  description = "value"
 }
 
 variable "kv_backend_name" {
-  type        = string
-  description = "Name of keyvault backend"
+  type = string
+  description = "value"
+}
+
+variable "sa_backend_accesskey_name" {
+  type = string
+  description = "value"
 }

@@ -1,13 +1,13 @@
+
 terraform {
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm"
+      source = "hashicorp/azurerm"
       version = "3.75.0"
     }
   }
 }
 
-# For Keyvault
 provider "azurerm" {
   features {
     key_vault {
@@ -18,10 +18,11 @@ provider "azurerm" {
 }
 
 resource "random_string" "Random_string" {
-  length  = 10
+  length = 10
   special = false
-  upper   = false
+  upper = false
 }
+
 
 resource "azurerm_resource_group" "rg_backend" {
   name     = var.rg_backend_name
@@ -34,16 +35,18 @@ resource "azurerm_storage_account" "sa_backend" {
   location                 = azurerm_resource_group.rg_backend.location
   account_tier             = "Standard"
   account_replication_type = "GRS"
+
 }
 
 resource "azurerm_storage_container" "sc_backend" {
-  name                  = var.sa_backend_name
+  name                  = var.sc_backend_name
   storage_account_name  = azurerm_storage_account.sa_backend.name
   container_access_type = "private"
 }
 
-# Key Vault!
+# Key vault shits
 data "azurerm_client_config" "current" {}
+
 
 resource "azurerm_key_vault" "kv_backend" {
   name                        = "${lower(var.kv_backend_name)}${random_string.Random_string.result}"
