@@ -1,6 +1,6 @@
 variable "rg_location" {
   type    = string
-  default = "northeurope"
+  default = "North Europe"
 }
 variable "rg_name" {
   type    = string
