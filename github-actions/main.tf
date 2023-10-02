@@ -3,7 +3,7 @@ locals {
 
   rg_name = terraform.workspace == "default" ? "${var.rg_name}" : "${var.rg_name}-${local.workspace-suffix}"
   sa_name = terraform.workspace == "default" ? "${var.sa_name}" : "${var.sa_name}-${local.workspace-suffix}"
-  web_suffix = "<h1>${terraform.workspace}</h1><p>Jeg er på saken!</p>"
+  web_suffix = "<h1>${terraform.workspace}</h1><p>The infra Man!</p>"
 }
 
 resource "random_string" "random_string" {
@@ -13,7 +13,7 @@ resource "random_string" "random_string" {
 }
 
 # Create Resource Group
-resource "azurerm_resource_group" "rg_web" {
+resource "azurerm_resource_group" "rg_web_ez" {
   name     = local.rg_name
   location = var.location
 }
@@ -21,10 +21,10 @@ resource "azurerm_resource_group" "rg_web" {
 # Create Storage Account
 resource "azurerm_storage_account" "sa_web" {
   name                     = "${lower(local.sa_name)}${random_string.random_string.result}"
-  resource_group_name      = azurerm_resource_group.rg_web.name
-  location                 = azurerm_resource_group.rg_web.location
+  resource_group_name      = azurerm_resource_group.rg_web_ez.name
+  location                 = azurerm_resource_group.rg_web_ez.location
   account_tier             = "Standard"
-  account_replication_type = "LRS"
+  account_replication_type = "GRS"
 
   static_website {
     index_document = var.index_document
@@ -38,7 +38,7 @@ resource "azurerm_storage_blob" "index_html" {
   storage_container_name = "$web"
   type                   = "Block"
   content_type           = "text/html"
-  source_content         = "${var.source_content}-${local.web_suffix}"
+  source_content         = "${var.source_content}${local.web_suffix}"
 }
 
 output "primary_web_endpoint" {

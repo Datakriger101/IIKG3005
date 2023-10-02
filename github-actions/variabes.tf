@@ -1,20 +1,20 @@
 variable "location" {
-  type = string
+  type    = string
   default = "westeurope"
 }
 variable "rg_name" {
-  type = string
+  type    = string
   default = "rg-web"
 }
 variable "sa_name" {
-  type = string
+  type    = string
   default = "saweb"
 }
 variable "source_content" {
-  type = string
+  type    = string
   default = "<h1>Hello, this page was made with Terraform</h1>"
 }
 variable "index_document" {
-  type = string
+  type    = string
   default = "index.html"
 }
