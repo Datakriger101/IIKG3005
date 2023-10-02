@@ -3,7 +3,7 @@ locals {
 
   rg_name = terraform.workspace == "default" ? "${var.rg_name}" : "${var.rg_name}-${local.workspace-suffix}"
   sa_name = terraform.workspace == "default" ? "${var.sa_name}" : "${var.sa_name}-${local.workspace-suffix}"
-  web_suffix = "<h1>${terraform.workspace}</h1><p>The infra Man!</p>"
+  web_suffix = "<h1>${terraform.workspace}</h1><p>The superman!</p>"
 }
 
 resource "random_string" "random_string" {
@@ -24,7 +24,7 @@ resource "azurerm_storage_account" "sa_web" {
   resource_group_name      = azurerm_resource_group.rg_web_ez.name
   location                 = azurerm_resource_group.rg_web_ez.location
   account_tier             = "Standard"
-  account_replication_type = "GRS"
+  account_replication_type = "LRS"
 
   static_website {
     index_document = var.index_document
