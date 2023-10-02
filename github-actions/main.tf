@@ -15,7 +15,7 @@ resource "random_string" "random_string" {
 # Create Resource Group
 resource "azurerm_resource_group" "rg_web_ez" {
   name     = local.rg_name
-  location = var.location
+  location = var.rg_location
 }
 
 # Create Storage Account

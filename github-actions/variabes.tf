@@ -1,4 +1,4 @@
-variable "location" {
+variable "rg_location" {
   type    = string
   default = "westeurope"
 }
@@ -17,4 +17,4 @@ variable "source_content" {
 variable "index_document" {
   type    = string
   default = "index.html"
-}
+} 
