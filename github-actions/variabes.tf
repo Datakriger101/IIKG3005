@@ -12,7 +12,7 @@ variable "sa_name" {
 }
 variable "source_content" {
   type    = string
-  default = "<h1>Hello, this page was made with Terraform 2.2</h1>"
+  default = "<h1>Hello, this page was made with Terraform 2.3</h1>"
 }
 variable "index_document" {
   type    = string
