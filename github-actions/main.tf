@@ -31,7 +31,7 @@ resource "azurerm_storage_account" "sa_web" {
   }
 }
 
-# Add a index.html file to the storage account
+# Add a index.html file to the storage account a
 resource "azurerm_storage_blob" "index_html" {
   name                   = var.index_document
   storage_account_name   = azurerm_storage_account.sa_web.name
@@ -44,3 +44,4 @@ resource "azurerm_storage_blob" "index_html" {
 output "primary_web_endpoint" {
   value = azurerm_storage_account.sa_web.primary_web_endpoint
 }
+
