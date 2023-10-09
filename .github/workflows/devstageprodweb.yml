@@ -3,7 +3,7 @@ name: Terraform CI/CD
 on:
   push:
     paths:
-      - 'github-actions/**'
+      - ./github-actions
   workflow_dispatch:
 
 env:
@@ -13,78 +13,73 @@ env:
   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
   WORKING_DIR: ./github-actions
 
-# Development
 jobs:
   dev_stage:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: action/checkout@v3
-
+        uses: actions/checkout@v3
+      
       - name: Terraform init
         run: terraform init
-        working-directory: ${{ env.WORKING_DIR }}   
-
-      - name: Terraform workspace select of create dev
+        working-directory: ${{ env.WORKING_DIR }}
+        
+      - name: Terraform workspace select or create dev
         run: terraform workspace select dev || terraform workspace new dev
-        working-directory: ${{ env.WORKING_DIR }}   
-
+        working-directory: ${{ env.WORKING_DIR }}
+      
       - name: Terraform apply dev
         run: terraform apply -auto-approve
-        working-directory: ${{ env.WORKING_DIR }}   
+        working-directory: ${{ env.WORKING_DIR }}
 
       - name: Test dev
         run: curl $(terraform output -raw primary_web_endpoint)
         working-directory: ${{ env.WORKING_DIR }}
 
-    
-  # Stage
   stage_prod:
     needs: dev_stage
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: action/checkout@v3
-
+        uses: actions/checkout@v3
+      
       - name: Terraform init
         run: terraform init
-        working-directory: ${{ env.WORKING_DIR }}   
-
-      - name: Terraform workspace select of create stage
+        working-directory: ${{ env.WORKING_DIR }}
+        
+      - name: Terraform workspace select or create stage
         run: terraform workspace select stage || terraform workspace new stage
-        working-directory: ${{ env.WORKING_DIR }}   
-
+        working-directory: ${{ env.WORKING_DIR }}
+      
       - name: Terraform apply stage
         run: terraform apply -auto-approve
-        working-directory: ${{ env.WORKING_DIR }}   
+        working-directory: ${{ env.WORKING_DIR }}
 
       - name: Test stage
         run: curl $(terraform output -raw primary_web_endpoint)
         working-directory: ${{ env.WORKING_DIR }}
 
-  # Production
   prod:
     needs: stage_prod
     runs-on: ubuntu-latest
-    # Kan see krav om manuell godkjenning av ulike versjoner. Dette er noe av fordelen
-    environment:            
+    environment: 
       name: production
-      url: ${{ steps.get_web_endpoint.outputs.WEB_ENDPOINT }} # Replace deploy_prod and web_url ... something
+      url: ${{ steps.get_web_endpoint.outputs.WEB_ENDPOINT }} # replace deploy_prod and web_url with actual output variables
     steps:
       - name: Checkout
-        uses: action/checkout@v3
-
+        uses: actions/checkout@v3
+      
       - name: Terraform init
         run: terraform init
-        working-directory: ${{ env.WORKING_DIR }}   
-
-      - name: Terraform workspace select of create prod
+        working-directory: ${{ env.WORKING_DIR }}
+        
+      - name: Terraform workspace select or create prod
         run: terraform workspace select prod || terraform workspace new prod
-        working-directory: ${{ env.WORKING_DIR }}   
-
+        working-directory: ${{ env.WORKING_DIR }}
+      
       - name: Terraform apply prod
         run: terraform apply -auto-approve
-        working-directory: ${{ env.WORKING_DIR }}   
+        working-directory: ${{ env.WORKING_DIR }}
 
       - name: Test prod
         run: curl $(terraform output -raw primary_web_endpoint)
@@ -92,5 +87,5 @@ jobs:
 
       - name: Get Web Endpoint
         id: get_web_endpoint
-        run: echo "WEB_ENDPOINT=$terraform output -raw primary_web_endpoint)"
+        run: echo "WEB_ENDPOINT=$(terraform output -raw primary_web_endpoint)" 
         working-directory: ${{ env.WORKING_DIR }}
