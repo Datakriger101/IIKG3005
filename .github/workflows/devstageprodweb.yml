@@ -67,7 +67,7 @@ jobs:
     needs: stage_prod
     runs-on: ubuntu-latest
     # Kan see krav om manuell godkjenning av ulike versjoner. Dette er noe av fordelen
-    enviorment:            
+    environment:            
       name: production
       url: ${{ steps.get_web_endpoint.outputs.WEB_ENDPOINT }} # Replace deploy_prod and web_url ... something
     steps:
