@@ -5,6 +5,9 @@
 *.tfstate
 *.tfstate.*
 
+# main.tfplan files
+**/*.main.tfplan
+
 # Crash log files
 crash.log
 crash.*.log
@@ -34,4 +37,3 @@ override.tf.json
 terraform.rc
 
 # tfplan file
-main.tfplan
