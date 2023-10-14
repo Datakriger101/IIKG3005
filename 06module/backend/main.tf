@@ -1,9 +1,8 @@
-
 terraform {
   required_providers {
     azurerm = {
       source = "hashicorp/azurerm"
-      version = "3.75.0"
+      version = "3.73.0"
     }
   }
 }
@@ -17,10 +16,10 @@ provider "azurerm" {
   }
 }
 
-resource "random_string" "Random_string" {
-  length = 10
-  special = false
-  upper = false
+resource "random_string" "random_string" {
+    length = 10
+    special = false
+    upper = false
 }
 
 
@@ -30,12 +29,11 @@ resource "azurerm_resource_group" "rg_backend" {
 }
 
 resource "azurerm_storage_account" "sa_backend" {
-  name                     = "${lower(var.sa_backend_name)}${random_string.Random_string.result}"
+  name                     = "${lower(var.sa_backend_name)}${random_string.random_string.result}"
   resource_group_name      = azurerm_resource_group.rg_backend.name
   location                 = azurerm_resource_group.rg_backend.location
   account_tier             = "Standard"
   account_replication_type = "GRS"
-
 }
 
 resource "azurerm_storage_container" "sc_backend" {
@@ -44,12 +42,11 @@ resource "azurerm_storage_container" "sc_backend" {
   container_access_type = "private"
 }
 
-# Key vault shits
+
 data "azurerm_client_config" "current" {}
 
-
 resource "azurerm_key_vault" "kv_backend" {
-  name                        = "${lower(var.kv_backend_name)}${random_string.Random_string.result}"
+  name                        = "${lower(var.kv_backend_name)}${random_string.random_string.result}"
   location                    = azurerm_resource_group.rg_backend.location
   resource_group_name         = azurerm_resource_group.rg_backend.name
   enabled_for_disk_encryption = true
@@ -64,15 +61,15 @@ resource "azurerm_key_vault" "kv_backend" {
     object_id = data.azurerm_client_config.current.object_id
 
     key_permissions = [
-      "Get", "List", "Create",
+      "Get","List","Create",
     ]
 
     secret_permissions = [
-      "Get", "Set", "List",
+      "Get","Set","List",
     ]
 
     storage_permissions = [
-      "Get", "Set", "List",
+      "Get","Set","List",
     ]
   }
 }
