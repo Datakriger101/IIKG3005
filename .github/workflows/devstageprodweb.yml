@@ -3,7 +3,7 @@ name: Terraform CI/CD
 on:
   push:
     paths:
-      - 'github-actions/**'
+      - '06module/github-actions/**'
   workflow_dispatch:
 
 env:
