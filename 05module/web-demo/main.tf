@@ -23,6 +23,7 @@ resource "azurerm_storage_account" "sa_web" {
   }
 }
 
+
 # Add a index.html file to the storage account
 resource "azurerm_storage_blob" "index_html" {
   name                   = var.index_document
