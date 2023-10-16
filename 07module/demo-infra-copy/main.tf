@@ -11,11 +11,7 @@ resource "random_string" "random_string" {
 }
 
 resource "random_password" "password" {
-<<<<<<< HEAD
   length           = 17
-=======
-  length           = 15
->>>>>>> cc4ae723caee6f701b8597bdf1bbdd4ce1c6fde7
   special          = true
   override_special = "!%&*()-_=+[]{}<>:?"
 }
