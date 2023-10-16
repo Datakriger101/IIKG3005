@@ -1,7 +1,7 @@
 ###### General variables ######
 variable "base_name" {
   type        = string
-  default     = "demo"
+  default     = "ezkid"
   description = "value of the base name"
 }
 
