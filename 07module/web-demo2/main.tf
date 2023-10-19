@@ -3,7 +3,7 @@
 locals {
   workspace-suffix = terraform.workspace == "default" ? "" : "${terraform.workspace}"
 
-  rg_name = terraform.workspace == "default" ? "${var.rg_name}" : "${var.rg_name}${local.workspace-suffix}"
+  rg_name = terraform.workspace == "default" ? "${var.rg_name}" : "${var.rg_name}-${local.workspace-suffix}"
   sa_name = terraform.workspace == "default" ? "${var.sa_name}" : "${var.sa_name}${local.workspace-suffix}"
   web_suffix = "<h1>${terraform.workspace}</h1><p>The Superman!</p>"
 }
@@ -16,7 +16,7 @@ resource "random_string" "random_string" {
 
 # Create Resource Group
 resource "azurerm_resource_group" "rg_web" {
-  name     = var.rg_name
+  name     = local.rg_name
   location = var.location
 }
 
