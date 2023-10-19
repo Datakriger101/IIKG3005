@@ -1,9 +1,9 @@
-name: Terraform CI/CD
+name: Going prod web
 
 on:
   push:
     paths:
-      - '06module/github-actions/**'
+      - '07module/web-demo2**'
   workflow_dispatch:
 
 env:
