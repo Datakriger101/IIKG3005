@@ -8,8 +8,8 @@ terraform {
   }
 
   backend "azurerm" {
-    resource_group_name  = "ez-tf-backend"
-    storage_account_name = "ezsabetfs66enrhk51w"
+    resource_group_name  = "ez-rg-backend"
+    storage_account_name = "ezsabeo8kuwctzxt"
     container_name       = "tfstate"
     key                  = "ez.terraform.tfstate"
     # Bruke key for å definere applikasjons om brukes. Noe smart.
