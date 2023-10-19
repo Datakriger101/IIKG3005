@@ -1,10 +1,7 @@
-name: CI/CD Terraform
+name: On new branch to main
 
 on:
-  push:
-    paths:
-      - '07module/web-demo2**'
-  workflow_dispatch:
+  create
 
 env:
   ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -14,78 +11,39 @@ env:
   WORKING_DIR: '07module/web-demo2'
 
 jobs:
-  dev_stage:
+  new-branch-or-tag-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      
-      - name: Terraform init
-        run: terraform init
-        working-directory: ${{ env.WORKING_DIR }}
-        
-      - name: Terraform workspace select or create dev
-        run: terraform workspace select dev || terraform workspace new dev
-        working-directory: ${{ env.WORKING_DIR }}
-      
-      - name: Terraform apply dev
-        run: terraform apply -auto-approve
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Validate terraform fmt
+        run: terraform fmt -check
         working-directory: ${{ env.WORKING_DIR }}
 
-      - name: Test dev
-        run: curl $(terraform output -raw primary_web_endpoint)
+      - name: Validate Terraform code
+        run: terraform validate
         working-directory: ${{ env.WORKING_DIR }}
 
-  stage_prod:
-    needs: dev_stage
+  tfsec:
+    name: tfsec
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      
-      - name: Terraform init
-        run: terraform init
-        working-directory: ${{ env.WORKING_DIR }}
-        
-      - name: Terraform workspace select or create stage
-        run: terraform workspace select stage || terraform workspace new stage
-        working-directory: ${{ env.WORKING_DIR }}
-      
-      - name: Terraform apply stage
-        run: terraform apply -auto-approve
-        working-directory: ${{ env.WORKING_DIR }}
+      - name: Clone repo
+        uses: actions/checkout@v2
+      - name: tfsec
+        uses: aquasecurity/tfsec-action@v1.0.0
 
-      - name: Test stage
-        run: curl $(terraform output -raw primary_web_endpoint)
-        working-directory: ${{ env.WORKING_DIR }}
-
-  prod:
-    needs: stage_prod
+  create-pull-request:
+    name: Create Pull Request
     runs-on: ubuntu-latest
-    environment: 
-      name: production
-      url: ${{ steps.get_web_endpoint.outputs.WEB_ENDPOINT }} # replace deploy_prod and web_url with actual output variables
+    needs: [new-branch-or-tag-job, tfsec]  # Ensure this job runs only if the previous jobs succeed
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      
-      - name: Terraform init
-        run: terraform init
-        working-directory: ${{ env.WORKING_DIR }}
-        
-      - name: Terraform workspace select or create prod
-        run: terraform workspace select prod || terraform workspace new prod
-        working-directory: ${{ env.WORKING_DIR }}
-      
-      - name: Terraform apply prod
-        run: terraform apply -auto-approve
-        working-directory: ${{ env.WORKING_DIR }}
-
-      - name: Test prod
-        run: curl $(terraform output -raw primary_web_endpoint)
-        working-directory: ${{ env.WORKING_DIR }}
-
-      - name: Get Web Endpoint
-        id: get_web_endpoint
-        run: echo "WEB_ENDPOINT=$(terraform output -raw primary_web_endpoint)" 
-        working-directory: ${{ env.WORKING_DIR }}
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v3
+        with:
+          title: "Automated PR: Merge branch to main"
+          branch: "auto-pr-branch"  # This will be the name of the branch for the PR
+          base: "main"  # The branch you want to merge into
