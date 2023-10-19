@@ -17,6 +17,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
+      - name: Terraform init
+        run: terraform init
+        working-directory: ${{ env.WORKING_DIR }}
+
       - name: Validate terraform fmt
         run: terraform fmt -check
         working-directory: ${{ env.WORKING_DIR }}
