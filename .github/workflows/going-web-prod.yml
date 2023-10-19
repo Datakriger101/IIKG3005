@@ -53,9 +53,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+
+      - name: Get Current Branch Name
+        id: get-branch-name
+        run: echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
+
       - name: Create PR
         uses: peter-evans/create-pull-request@v3
         with:
-          title: "Automated PR: Merge branch to main"
-          branch: "auto-pr-branch"  # This will be the name of the branch for the PR
+          title: "Automated PR: Merge ${{ steps.get-branch-name.outputs.branch }} to main"
+          branch: ${{ steps.get-branch-name.outputs.branch }}  # Use the current branch for the PR
           base: "main"  # The branch you want to merge into
