@@ -11,7 +11,7 @@ env:
   WORKING_DIR: '07module/web-demo2'
 
 jobs:
-  new-branch-or-tag-job:
+  new-branch-to-validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -30,18 +30,20 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
 
   tfsec:
+    needs: new-branch-to-validate
     name: tfsec
     runs-on: ubuntu-latest
     steps:
       - name: Clone repo
         uses: actions/checkout@v2
+
       - name: tfsec
         uses: aquasecurity/tfsec-action@v1.0.0
 
   create-pull-request:
     name: Create Pull Request
     runs-on: ubuntu-latest
-    needs: [new-branch-or-tag-job, tfsec]  # Ensure this job runs only if the previous jobs succeed
+    needs: [new-branch-to-validate, tfsec]  # Ensure this job runs only if the previous jobs succeed
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
