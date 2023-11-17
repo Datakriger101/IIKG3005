@@ -8,6 +8,7 @@ terraform {
   }
 }
 
+
 provider "azurerm" {
   features {
 
@@ -29,16 +30,23 @@ module "ResourceGroup" {
 
 module "Network" {
   source    = "./Network"
-  rgname    = module.ResourceGroup.rg_name_output
+  
+  # Gjorde dette for å vise at man ikke trenge outputs hvis man 
+  # har resourcegroup i root module. 
+  rgname    = azurerm_resource_group.ezkid-module04-prod.name
   location  = var.location[0]
   base_name = var.base_name
-  tags = local.tags_nsg
+  tags      = local.tags_network
 
 }
 
 module "VirtualMachine" {
-  source = "./VirtualMachine"
-  #rgname = module.ResourceGroup.rg_name_output
-  #location = var.location[0]
+  source     = "./VirtualMachine"
+  rgname     = module.ResourceGroup.rg_name_output
+  location   = var.location[0]
+  base_name  = var.base_name
+  subnet_id  = module.Network.subnet_id_output
+  pip_output = module.Network.pip_output
+  tags       = local.tags_vm
 
 }

@@ -4,16 +4,8 @@ locals {
     project     = "Module 04"
     environment = "Production"
     department  = "Infrastructure"
-
   }
 
-  tags_nsg = {
-    owner       = "Eskil Refsaard"
-    project     = "Module 04"
-    environment = "Production"
-    department  = "Infrastructure"
-    department  = "Security"
-  }
 
   tags_billing = {
     owner       = "Eskil Refsaard"
@@ -21,4 +13,21 @@ locals {
     environment = "Production"
     department  = "Economy"
   }
+
+
+  tags_network = {
+    owner       = "Eskil Refsaard"
+    project     = "Module 04"
+    environment = "Production"
+    department  = "Economy"
+  }
+
+  tags_vm = {
+    owner        = "Eskil Refsgaard"
+    project      = "Module 04"
+    environment  = "Production"
+    department   = "Infrastructure"
+    tags_billing = var.tags_billing
+  }
+
 }
