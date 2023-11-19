@@ -6,7 +6,7 @@ resource "random_string" "random_string" {
 
 # Create Resource Group
 resource "azurerm_resource_group" "rg_web" {
-  name     = var.rgname
+  name     = "${var.rgname}-${local.workspace_type}"
   location = var.location
 }
 
@@ -31,7 +31,7 @@ resource "azurerm_storage_blob" "index_html" {
   storage_container_name = "$web"
   type                   = "Block"
   content_type           = "text/html"
-  source_content         = var.source_content
+  source_content         = "${var.source_content}<p>${upper(local.workspace_type)}</p>"
 }
 
 output "primary_web_endpoint" {
