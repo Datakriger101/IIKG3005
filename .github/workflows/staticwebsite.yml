@@ -9,8 +9,13 @@ on:
     paths:
       - 'Undervisning/06module/staticwebpage/**'
 
+  # For å avgjøre om det skal kjøres apply eller destroy
   workflow_dispatch:
-
+    inputs:
+      action_type:
+        description: 'What actins to perform'
+        required: true
+        default: 'apply'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -45,17 +50,30 @@ jobs:
       - name: 'Terraform plan'
         id: plan
         run: terraform plan
-        
         working-directory: ${{ env.WORKING_DIR }} 
-                    
-      - name: 'Check last commit message'
-        id: commit
-        run: echo "::set-output name=message::$(git log --format=%B -n 1)"
-      - name: 'Conditionally run Terraform action'
-        run: |
-          if [[ "${{ steps.commit.outputs.message }}" == *"destroy"* ]]; then
-            terraform destroy -auto-approve
-          else
-            terraform apply -auto-approve
-          fi
-        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: 'Terraform apply'
+        if: github.event.inputs.action_type == 'apply'
+        id: apply
+        run: terraform apply --auto-approve
+        working-directory: ${{ env.WORKING_DIR }} 
+      
+      - name: 'Terraform destroy'
+        if: github.event.inputs.action_type == 'destroy'
+        id: destroy
+        run: terraform destroy --auto-approve
+        working-directory: ${{ env.WORKING_DIR }} 
+                   
+# Lagrer denne til når jeg skal bruke den
+
+#      - name: 'Check last commit message'
+#        id: commit
+#        run: echo "::set-output name=message::$(git log --format=%B -n 1)"
+#      - name: 'Conditionally run Terraform action'
+#        run: |
+#          if [[ "${{ steps.commit.outputs.message }}" == *"destroy"* ]]; then
+#            terraform destroy -auto-approve
+#          else
+#            terraform apply -auto-approve
+#          fi
+#        working-directory: ${{ env.WORKING_DIR }}
