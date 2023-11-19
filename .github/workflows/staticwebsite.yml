@@ -10,6 +10,8 @@ on:
       - 'Undervisning/06module/staticwebpage/**'
 
   # For å avgjøre om det skal kjøres apply eller destroy
+  # Kan bare fjerne denne og utkommentere den nederste hvis man heller ønsker å bruke
+  # git commits for å avgjøre hva som skal gjøres
   workflow_dispatch:
     inputs:
       action_type:
