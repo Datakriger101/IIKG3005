@@ -1,9 +1,12 @@
+# Lager ikke ny config da jeg allerede har laget denne og finpusset den en del
+# Denne er nok fin å bruke ved videre arbeid mot eksamen.
+
 locals {
   workspace-suffix = terraform.workspace == "default" ? "" : "${terraform.workspace}"
 
   rg_name = terraform.workspace == "default" ? "${var.rg_name}" : "${var.rg_name}${local.workspace-suffix}"
   sa_name = terraform.workspace == "default" ? "${var.sa_name}" : "${var.sa_name}${local.workspace-suffix}"
-  web_suffix = "<h1>${terraform.workspace}</h1><p>The Superman!</p>"
+  web_suffix = "<h1>${terraform.workspace}</h1>"
 }
 
 resource "random_string" "random_string" {
@@ -38,7 +41,8 @@ resource "azurerm_storage_blob" "index_html" {
   storage_container_name = "$web"
   type                   = "Block"
   content_type           = "text/html"
-  source_content         = "${var.source_content}${local.web_suffix}"
+  source_content         = "<h1>${var.source_content}${local.web_suffix}</h1><p>${var.more_source_content}</p>"
+  # Vet ikke hvorfor, men workspace suffix havner på linjen under...
 }
 
 output "primary_web_endpoint" {

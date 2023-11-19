@@ -1,3 +1,6 @@
+# Benytter meg bare av samme backend som er laget i module 05:
+# IIKG3005/Weekly-assignments/05Week_Backend-workspace/backend
+
 terraform {
   required_providers {
     azurerm = {
