@@ -40,7 +40,7 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
 
       - name: Format config and validate format
-        run: terraform fmt * && terraform fmt -check
+        run: terraform fmt -check
         working-directory: ${{ env.WORKING_DIR }}
         
 
