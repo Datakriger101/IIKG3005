@@ -62,6 +62,10 @@ jobs:
         run: terraform apply -auto-approve
         working-directory: ${{ env.WORKING_DIR }}
 
+      - name: Sleep to make things work
+        run: sleep 60
+        working-directory: ${{ env.WORKING_DIR }}
+
       - name: Test dev
         run: curl $(terraform output -raw primary_web_endpoint)
         working-directory: ${{ env.WORKING_DIR }}
@@ -88,6 +92,10 @@ jobs:
       
       - name: Terraform apply stage
         run: terraform apply -auto-approve
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Sleep to make things work
+        run: sleep 60
         working-directory: ${{ env.WORKING_DIR }}
 
       - name: Test stage
@@ -120,6 +128,10 @@ jobs:
       
       - name: Terraform apply prod
         run: terraform apply -auto-approve
+        working-directory: ${{ env.WORKING_DIR }}
+    
+      - name: Sleep to make things work
+        run: sleep 60
         working-directory: ${{ env.WORKING_DIR }}
 
       - name: Test prod
