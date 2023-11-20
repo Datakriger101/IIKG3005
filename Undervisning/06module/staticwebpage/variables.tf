@@ -27,5 +27,5 @@ variable "index_document" {
 variable "more_source_content" {
   type = string
   description = "Just more of the good stuff"
-  default = "Yeah superman was here"
+  default = "Yeah superman was here, update del 1"
 }
