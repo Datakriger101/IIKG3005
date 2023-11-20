@@ -12,7 +12,7 @@ env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
   WORKING_DIR: ./Weekly-assignments/06Week_github-acti-work/quick_infra
-  
+
   TF_VAR_rgname: "ez-rg-module06"
   TF_VAR_location: '["West Europe", "North Europe", "East US"]'
   TF_VAR_base_name: "ez-mod06"
@@ -24,7 +24,7 @@ env:
   TF_VAR_department_economy: "Economy"
   TF_VAR_project_name: "Module 06"
   TF_VAR_owner_name: "Eskil Refsgaard"
-  
+  TF_VAR_rsa_ssh_key: ${{ secrets.RSA_SSH_KEY }}
 
 # Følte dette var litt confusing. 
 # Her er jobben dev, som vil starte stage hvis successfull. 

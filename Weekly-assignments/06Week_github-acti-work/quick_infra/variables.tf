@@ -58,3 +58,8 @@ variable "owner_name" {
   type        = string
   description = "Owner name"
 }
+
+variable "rsa_ssh_key" {
+  type = string
+  description = "SSH key for the VM"
+}

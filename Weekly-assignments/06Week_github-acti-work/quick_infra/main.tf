@@ -26,6 +26,7 @@ module "VirtualMachine" {
   subnet_id  = module.Network.subnet_id_output
   pip_output = module.Network.pip_output
   tags       = local.tags_vm
+  rsa_ssh_key = var.rsa_ssh_key
 }
 
 module "Webpage" {

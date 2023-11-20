@@ -25,7 +25,7 @@ resource "azurerm_linux_virtual_machine" "ez-mod06-vm" {
 
   admin_ssh_key {
     username   = "adminuser"
-    public_key = file("~/.ssh/ntnustudent.pub")
+    public_key = var.rsa_ssh_key
   }
 
   os_disk {

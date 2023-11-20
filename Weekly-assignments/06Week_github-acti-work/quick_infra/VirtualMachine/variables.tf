@@ -28,3 +28,8 @@ variable "tags" {
   type        = map(string)
   description = "Tags for the resource group"
 }
+
+variable "rsa_ssh_key" {
+  type = string
+  description = "SSH key for the VM"
+}
