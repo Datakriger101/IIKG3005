@@ -40,21 +40,21 @@ variable "index_document" {
 
 ### Var for tags
 variable "department_inf" {
-  type = string
+  type        = string
   description = "Infrastructure"
 }
 
 variable "department_economy" {
-  type = string
+  type        = string
   description = "Ecconomy"
 }
 
 variable "project_name" {
-  type = string
+  type        = string
   description = "Project name"
 }
 
 variable "owner_name" {
-  type = string
+  type        = string
   description = "Owner name"
 }

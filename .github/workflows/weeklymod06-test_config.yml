@@ -1,4 +1,4 @@
-name: CI/CD Terraform
+name: Weekly assign 06 - Github Actions
 
 on:
   push:
