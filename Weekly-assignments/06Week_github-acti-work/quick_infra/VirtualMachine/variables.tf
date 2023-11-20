@@ -30,6 +30,6 @@ variable "tags" {
 }
 
 variable "rsa_ssh_key" {
-  type = string
+  type        = string
   description = "SSH key for the VM"
 }

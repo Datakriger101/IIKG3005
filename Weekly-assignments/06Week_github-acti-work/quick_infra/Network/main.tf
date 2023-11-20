@@ -31,7 +31,7 @@ resource "azurerm_network_security_group" "ez-nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "178.232.227.126" # Må endres til sin brukte IP
+    source_address_prefix      = " 129.241.236.242" # Må endres til sin brukte IP
     destination_address_prefix = "*"
   }
 

@@ -19,13 +19,13 @@ module "Network" {
 }
 
 module "VirtualMachine" {
-  source     = "./VirtualMachine"
-  rgname     = module.ResourceGroup.rg_name_output
-  location   = var.location[0]
-  base_name  = var.base_name
-  subnet_id  = module.Network.subnet_id_output
-  pip_output = module.Network.pip_output
-  tags       = local.tags_vm
+  source      = "./VirtualMachine"
+  rgname      = module.ResourceGroup.rg_name_output
+  location    = var.location[0]
+  base_name   = var.base_name
+  subnet_id   = module.Network.subnet_id_output
+  pip_output  = module.Network.pip_output
+  tags        = local.tags_vm
   rsa_ssh_key = var.rsa_ssh_key
 }
 
