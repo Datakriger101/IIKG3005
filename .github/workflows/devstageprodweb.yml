@@ -3,7 +3,7 @@ name: CI/CD Terraform
 on:
   push:
     paths:
-      - '06module/github-actions**'
+      - 'Undervisning/06module/staticwebpage/**'
   workflow_dispatch:
 
 env:
@@ -11,14 +11,16 @@ env:
   ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-  WORKING_DIR: '06module/github-actions'
+  WORKING_DIR: ./Undervisning/06module/staticwebpage
 
+# Følte dette var litt confusing. 
+# Her er jobben dev, som vil starte stage hvis successfull. 
 jobs:
   dev_stage:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Terraform init
         run: terraform init
@@ -37,7 +39,7 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
 
   stage_prod:
-    needs: dev_stage
+    needs: dev_stage # Avhengig av 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -62,7 +64,7 @@ jobs:
   prod:
     needs: stage_prod
     runs-on: ubuntu-latest
-    environment: 
+    environment:            
       name: production
       url: ${{ steps.get_web_endpoint.outputs.WEB_ENDPOINT }} # replace deploy_prod and web_url with actual output variables
     steps:
