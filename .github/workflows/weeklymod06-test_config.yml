@@ -62,17 +62,13 @@ jobs:
         run: terraform apply -auto-approve
         working-directory: ${{ env.WORKING_DIR }}
 
-      - name: Sleep to make things work
-        run: sleep 60
-        working-directory: ${{ env.WORKING_DIR }}
-
       - name: Test dev
-        run: curl $(terraform output -raw primary_web_endpoint)
+        run: curl $(terraform output -raw webpage_primary_web_endpoint)
         working-directory: ${{ env.WORKING_DIR }}
 
       - name: Get Web Endpoint
         id: get_web_endpoint
-        run: echo "WEB_ENDPOINT=$(terraform output -raw primary_web_endpoint)" 
+        run: echo "WEB_ENDPOINT=$(terraform output -raw webpage_primary_web_endpoint)" 
         working-directory: ${{ env.WORKING_DIR }}
 
   deploy_stage:
@@ -94,17 +90,13 @@ jobs:
         run: terraform apply -auto-approve
         working-directory: ${{ env.WORKING_DIR }}
 
-      - name: Sleep to make things work
-        run: sleep 60
-        working-directory: ${{ env.WORKING_DIR }}
-
       - name: Test stage
-        run: curl $(terraform output -raw primary_web_endpoint)
+        run: curl $(terraform output -raw webpage_primary_web_endpoint)
         working-directory: ${{ env.WORKING_DIR }}
 
       - name: Get Web Endpoint
         id: get_web_endpoint
-        run: echo "WEB_ENDPOINT=$(terraform output -raw primary_web_endpoint)" 
+        run: echo "WEB_ENDPOINT=$(terraform output -raw webpage_primary_web_endpoint)" 
         working-directory: ${{ env.WORKING_DIR }}
 
 
@@ -129,16 +121,12 @@ jobs:
       - name: Terraform apply prod
         run: terraform apply -auto-approve
         working-directory: ${{ env.WORKING_DIR }}
-    
-      - name: Sleep to make things work
-        run: sleep 60
-        working-directory: ${{ env.WORKING_DIR }}
 
       - name: Test prod
-        run: curl $(terraform output -raw primary_web_endpoint)
+        run: curl $(terraform output -raw webpage_primary_web_endpoint)
         working-directory: ${{ env.WORKING_DIR }}
 
       - name: Get Web Endpoint
         id: get_web_endpoint
-        run: echo "WEB_ENDPOINT=$(terraform output -raw primary_web_endpoint)" 
+        run: echo "WEB_ENDPOINT=$(terraform output -raw webpage_primary_web_endpoint)" 
         working-directory: ${{ env.WORKING_DIR }}
