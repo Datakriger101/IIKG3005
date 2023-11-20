@@ -12,17 +12,19 @@ env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
   WORKING_DIR: ./Weekly-assignments/06Week_github-acti-work/quick_infra
-  rgname: "ez-rg-module06"
-  location: '["West Europe", "North Europe", "East US"]*'
-  base_name: "ez-mod06"
-  billing_code: "EZITBilling223381"
-  saac_name: "saacweb"
-  source_content: "<h1>Webpage created with Terraform</h1>"
-  index_document: "index.html"
-  department_inf: "Infrastructure"
-  department_economy: "Economy"
-  project_name: "Module 06"
-  owner_name: "Eskil Refsgaard"
+  
+  TF_VAR_rgname: "ez-rg-module06"
+  TF_VAR_location: '["West Europe", "North Europe", "East US"]'
+  TF_VAR_base_name: "ez-mod06"
+  TF_VAR_billing_code: "EZITBilling223381"
+  TF_VAR_saac_name: "saacweb"
+  TF_VAR_source_content: "<h1>Webpage created with Terraform</h1>"
+  TF_VAR_index_document: "index.html"
+  TF_VAR_department_inf: "Infrastructure"
+  TF_VAR_department_economy: "Economy"
+  TF_VAR_project_name: "Module 06"
+  TF_VAR_owner_name: "Eskil Refsgaard"
+  
 
 # Følte dette var litt confusing. 
 # Her er jobben dev, som vil starte stage hvis successfull. 
