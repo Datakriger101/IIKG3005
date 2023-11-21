@@ -27,6 +27,11 @@ resource "azurerm_key_vault" "kv" {
       "Backup", "Delete", "DeleteSAS", "Get", "GetSAS", "List", "ListSAS", "Purge", "Recover", "RegenerateKey", "Restore", "Set", "SetSAS", "Update"
     ]
   }
+
+  network_acls {
+    bypass = "AzureServices"
+    default_action = "Deny"
+  }
 }
 
 resource "azurerm_key_vault_secret" "sa_accesskey" {
