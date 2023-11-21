@@ -39,3 +39,4 @@ resource "azurerm_network_security_rule" "ssh_inbound_myIP" {
 }
 
 # Jeg legger til comments for å gjøre alt lettere å lese
+# Endre fler kommentarer
