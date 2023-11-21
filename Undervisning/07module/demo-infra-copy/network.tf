@@ -37,3 +37,6 @@ resource "azurerm_network_security_rule" "ssh_inbound_myIP" {
   resource_group_name         = azurerm_resource_group.rg-infra.name
   network_security_group_name = azurerm_network_security_group.nsg.name
 }
+
+# Jeg legger til comments for å gjøre alt lettere å lese
+# Endre fler kommentarer
