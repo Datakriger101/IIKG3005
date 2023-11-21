@@ -30,6 +30,7 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
     azurerm_network_interface.vm_nic.id,
   ]
 
+  # En kommentar som endrer alt
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
