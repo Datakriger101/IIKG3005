@@ -8,7 +8,7 @@ on:
     branches:
       - 'main'
     paths:
-      - '07module/demo-infra-copy/**'
+      - 'Undervisning/07module/demo-infra-copy/**'
       
 jobs:
   terraform:
@@ -20,7 +20,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      WORKING_DIR: ./07module/demo-infra-copy
+      WORKING_DIR: ./Undervisning/07module/demo-infra-copy
       
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
