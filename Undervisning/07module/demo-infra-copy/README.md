@@ -1,0 +1,1 @@
+Jeg har ikke laget denne koden, hare bare copy paste fra hva tim lagde for denne modulen. 
