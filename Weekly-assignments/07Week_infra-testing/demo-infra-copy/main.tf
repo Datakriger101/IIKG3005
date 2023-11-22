@@ -10,6 +10,7 @@ resource "random_string" "random_string" {
   upper   = false
 }
 
+# We need this comment
 resource "random_password" "password" {
   length           = 16
   special          = true
