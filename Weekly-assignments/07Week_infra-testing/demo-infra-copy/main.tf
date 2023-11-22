@@ -12,7 +12,7 @@ resource "random_string" "random_string" {
 
 # We need this comment
 resource "random_password" "password" {
-  length           = 16
+  length           = 15
   special          = true
   override_special = "!%&*()-_=+[]{}<>:?"
 }
