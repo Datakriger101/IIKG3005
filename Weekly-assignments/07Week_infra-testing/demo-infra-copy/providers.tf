@@ -12,7 +12,7 @@ terraform {
     resource_group_name  = "ez-rg-mod05-backend"
     storage_account_name = "ezsaacbackend92x1ikov"
     container_name       = "tfstate"
-    key                  = "mod07-val/terraform.tfstate"
+    key                  = "mod07-full/terraform.tfstate"
   }
 }
 
