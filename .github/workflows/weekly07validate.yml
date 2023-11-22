@@ -13,7 +13,7 @@ on:
     branches-ignore:
       - 'main'
     paths:
-      - 'Weekly-assignments/07Week_infra-testing/demo-infra-copy/**'
+      - 'Weekly-assignments/07Week_infra-testing/web-demo/**'
 
 env:
   ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -21,7 +21,7 @@ env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  WORKING_DIR: ./Weekly-assignments/07Week_infra-testing/demo-infra-copy
+  WORKING_DIR: ./Weekly-assignments/07Week_infra-testing/web-demo
 
 
 
