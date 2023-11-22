@@ -61,7 +61,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under so your job can access it
-      - uses: actions/checkout@4
+      - uses: actions/checkout@master
       - name: tfsec
         # You may pin to the exact commit or the version.
         # uses: aquasecurity/tfsec-action@b466648d6e39e7c75324f25d83891162a721f2d6
@@ -77,6 +77,7 @@ jobs:
 
   # This workflow contains a single job called "Deploy to dev"
   deploy_dev:
+    needs: [validate_syntax, validate_security]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
