@@ -1,0 +1,40 @@
+# This is a basic workflow to help you get started with Actions
+
+name: WA07 - Deploy validated infrastructure
+
+# Controls when the workflow will run
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'Undervisning/07module/demo-infra-copy/**'
+
+
+jobs:
+  prod:
+    runs-on: ubuntu-latest         
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Terraform init
+        run: terraform init
+        working-directory: ${{ env.WORKING_DIR }}
+        
+      - name: Terraform workspace select or create prod
+        run: terraform workspace select prod || terraform workspace new prod
+        working-directory: ${{ env.WORKING_DIR }}
+      
+      - name: Terraform apply prod
+        run: terraform apply -auto-approve
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Test prod
+        run: curl $(terraform output -raw primary_web_endpoint)
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Get Web Endpoint
+        id: get_web_endpoint
+        run: echo "WEB_ENDPOINT=$(terraform output -raw primary_web_endpoint)" 
+        working-directory: ${{ env.WORKING_DIR }}

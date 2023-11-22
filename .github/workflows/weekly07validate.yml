@@ -1,0 +1,144 @@
+# This is a basic workflow to help validate your Terraform configuration
+# Brukes i Module 07 (min modul 07module da tim ikke skipper mtp. obligger) 
+
+name: Validate Infrastructure
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events
+  push:
+    # We want to validate all pushed to all the branches except main. 
+    # we then ensure that every step is good when we at the end want to merge to main
+    # Might be good to have a final validation when we create a pull request
+    branches-ignore:
+      - 'main'
+    paths:
+      - 'Weekly-assignments/07Week_infra-testing/**'
+
+env:
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  WORKING_DIR: ./Weekly-assignments/07Week_infra-testing
+
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "validate"
+  validate_syntax:
+    name: 'Validate'
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+
+      
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      # Runs a single command using the runners shell
+      - name: Terraform init
+        id: init
+        run: terraform init -upgrade
+        working-directory: ${{ env.WORKING_DIR }}          
+
+      - name: Terraform validate
+        id: validate
+        run: terraform validate
+        working-directory: ${{ env.WORKING_DIR }}
+
+
+  # This workflow contains a single job called "Security Check"
+  validate_security:
+    name: 'Security Check'
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+        
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under so your job can access it
+      - uses: actions/checkout@4
+      - name: tfsec
+        # You may pin to the exact commit or the version.
+        # uses: aquasecurity/tfsec-action@b466648d6e39e7c75324f25d83891162a721f2d6
+        uses: aquasecurity/tfsec-action@v1.0.3
+        with:
+          # Directory to run the action on, from the repo root. Default is . (root of the repository)
+          working_directory: ${{ env.WORKING_DIR }}
+          github_token: ${{ env.GITHUB_TOKEN }}
+        # Space separated args specified here will be added during tfsec execution.
+        # (eg. --force-all-dirs --verbose)
+
+
+  # This workflow contains a single job called "Deploy to dev"
+  deploy_dev:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Terraform init
+        run: terraform init
+        working-directory: ${{ env.WORKING_DIR }}
+        
+      - name: Terraform workspace select or create dev
+        run: terraform workspace select dev || terraform workspace new dev
+        working-directory: ${{ env.WORKING_DIR }}
+      
+      - name: Terraform apply dev
+        run: terraform apply -auto-approve
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Test dev
+        run: curl $(terraform output -raw primary_web_endpoint)
+        working-directory: ${{ env.WORKING_DIR }}
+
+
+  # This workflow contains a single job called "Deploy to pro
+  deploy_stage:
+    needs: deploy_dev # Avhengig av 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Terraform init
+        run: terraform init
+        working-directory: ${{ env.WORKING_DIR }}
+        
+      - name: Terraform workspace select or create stage
+        run: terraform workspace select stage || terraform workspace new stage
+        working-directory: ${{ env.WORKING_DIR }}
+      
+      - name: Terraform apply stage
+        run: terraform apply -auto-approve
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Test stage
+        run: curl $(terraform output -raw primary_web_endpoint)
+        working-directory: ${{ env.WORKING_DIR }}
+
+  create_pull_request:
+    runs-on: ubuntu-latest
+    needs: [validate_syntax, validate_security, deploy_stage]  # Ensure this job runs after the validation jobs
+    environment:            
+      name: production
+      url: ${{ steps.get_web_endpoint.outputs.WEB_ENDPOINT }} # replace deploy_prod and web_url with actual output variables
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: ${{ github.event.head_commit.message }} #ruker commit message?
+          title: 'Update Infrastructure Configuration'
+          body: |
+            This is an auto-generated PR with infrastructure configuration updates.
+          branch: 'auto-update-${{ github.head_ref }}'  # Example branch name for the PR
+          base: 'main'  # Target branch
