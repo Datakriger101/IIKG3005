@@ -22,4 +22,4 @@ output "vm_password" {
   sensitive = true
 }
 
-#ok nå?
+#ok nå? yes?
