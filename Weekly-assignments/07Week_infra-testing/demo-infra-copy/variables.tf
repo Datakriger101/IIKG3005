@@ -1,7 +1,7 @@
 ###### General variables ######
 variable "base_name" {
   type        = string
-  default     = "ez-module07"
+  default     = "ezmodule07"
   description = "value of the base name"
 }
 
@@ -28,7 +28,7 @@ variable "kv_name" {
 
 variable "sa_accesskey_name" {
   type        = string
-  default     = "sa-accesskey"
+  default     = "saaccesskey"
   description = "Name of the keyvault secret for the storage account access key"
 }
 
