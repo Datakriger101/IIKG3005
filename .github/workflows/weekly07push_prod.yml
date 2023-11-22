@@ -8,7 +8,7 @@ on:
     branches:
       - 'main'
     paths:
-      - 'Undervisning/07module/demo-infra-copy/**'
+      - 'Weekly-assignments/07Week_infra-testing/demo-infra-copy/**'
 
 
 jobs:
